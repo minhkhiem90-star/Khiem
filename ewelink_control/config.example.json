@@ -1,0 +1,18 @@
+{
+  "app_id": "DIEN_APP_ID_VAO_DAY",
+  "app_secret": "DIEN_APP_SECRET_VAO_DAY",
+  "region": "as",
+  "redirect_url": "http://127.0.0.1:8765/callback",
+
+  "always_on_top": true,
+  "refresh_seconds": 30,
+
+  "hotkeys": {
+    "<ctrl>+<alt>+1": "Đèn phòng khách",
+    "<ctrl>+<alt>+2": "Đèn phòng ngủ",
+    "<ctrl>+<alt>+3": { "device": "Đèn bếp", "action": "toggle" },
+    "<ctrl>+<alt>+9": "ALL_ON",
+    "<ctrl>+<alt>+0": "ALL_OFF",
+    "<ctrl>+<alt>+e": "SHOW"
+  }
+}
