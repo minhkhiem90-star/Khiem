@@ -1,6 +1,5 @@
-"""Điều khiển eWeLink bằng dòng lệnh.
+"""Bật/tắt thiết bị (qua Home Assistant hoặc eWeLink) bằng dòng lệnh.
 
-    python ewelink_ctl.py login                 # đăng nhập (mở trình duyệt)
     python ewelink_ctl.py list                  # liệt kê thiết bị
     python ewelink_ctl.py toggle "Đèn phòng khách"
     python ewelink_ctl.py on  "Đèn bếp"
@@ -10,7 +9,7 @@ Có thể gán các lệnh này cho phím tắt của hệ điều hành, Stream
 """
 import sys
 
-from ewelink_api import DemoClient, EWeLinkClient, EWeLinkError, find_channel
+from ewelink_api import DemoClient, EWeLinkError, find_channel, load_config, make_client
 
 
 def main(argv: list[str]) -> int:
@@ -21,7 +20,7 @@ def main(argv: list[str]) -> int:
         return 0
     cmd, rest = argv[0], " ".join(argv[1:])
     try:
-        client = DemoClient() if demo else EWeLinkClient.from_config()
+        client = DemoClient() if demo else make_client(load_config())
         if cmd == "login":
             client.login_interactive()
             return 0

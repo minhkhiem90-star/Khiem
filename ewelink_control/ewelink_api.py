@@ -1,4 +1,4 @@
-"""Thư viện nhỏ gọi eWeLink Cloud API v2 (CoolKit) – chỉ dùng thư viện chuẩn của Python.
+"""Thư viện nhỏ gọi eWeLink Cloud API v2 (chỉ dùng khi KHÔNG dùng Home Assistant) (CoolKit) – chỉ dùng thư viện chuẩn của Python.
 
 Luồng đăng nhập: OAuth 2.0 (cách chính thức cho tài khoản nhà phát triển miễn phí
 tại https://dev.ewelink.cc). Token được lưu vào token.json và tự làm mới.
@@ -51,9 +51,6 @@ def load_config() -> dict:
         )
     with CONFIG_PATH.open(encoding="utf-8") as f:
         cfg = json.load(f)
-    for key in ("app_id", "app_secret"):
-        if not cfg.get(key) or "DIEN_" in str(cfg.get(key)):
-            raise EWeLinkError(f"Chưa điền '{key}' trong config.json")
     cfg.setdefault("region", "as")
     cfg.setdefault("redirect_url", "http://127.0.0.1:8765/callback")
     cfg.setdefault("hotkeys", {})
@@ -138,6 +135,9 @@ class EWeLinkClient:
     @classmethod
     def from_config(cls, cfg: dict | None = None) -> "EWeLinkClient":
         cfg = cfg or load_config()
+        for key in ("app_id", "app_secret"):
+            if not cfg.get(key) or "DIEN_" in str(cfg.get(key)):
+                raise EWeLinkError(f"Chưa điền '{key}' trong config.json")
         c = cls(cfg["app_id"], cfg["app_secret"], cfg["region"], cfg["redirect_url"])
         if TOKEN_PATH.exists():
             try:
@@ -311,6 +311,14 @@ class EWeLinkClient:
             "type": 1, "id": ch.device_id, "params": ch.params_for(turn_on),
         })
         ch.on = turn_on
+
+
+def make_client(cfg: dict):
+    """Có 'ha_url' trong config → dùng Home Assistant, ngược lại dùng eWeLink Cloud."""
+    if cfg.get("ha_url") or cfg.get("ha_token"):
+        from ha_api import HAClient
+        return HAClient.from_config(cfg)
+    return EWeLinkClient.from_config(cfg)
 
 
 class DemoClient:

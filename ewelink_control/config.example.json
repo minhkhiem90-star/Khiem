@@ -1,11 +1,9 @@
 {
-  "app_id": "DIEN_APP_ID_VAO_DAY",
-  "app_secret": "DIEN_APP_SECRET_VAO_DAY",
-  "region": "as",
-  "redirect_url": "http://127.0.0.1:8765/callback",
+  "ha_url": "http://homeassistant.local:8123",
+  "ha_token": "DIEN_TOKEN_HOME_ASSISTANT_VAO_DAY",
 
   "always_on_top": true,
-  "refresh_seconds": 30,
+  "refresh_seconds": 15,
 
   "hotkeys": {
     "<ctrl>+<alt>+1": "Đèn phòng khách",

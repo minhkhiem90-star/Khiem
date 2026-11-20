@@ -12,8 +12,8 @@ import threading
 import tkinter as tk
 from tkinter import messagebox
 
-from ewelink_api import (BASE_DIR, Channel, DemoClient, EWeLinkClient, EWeLinkError,
-                         NeedLogin, find_channel, load_config)
+from ewelink_api import (BASE_DIR, Channel, DemoClient, EWeLinkError, NeedLogin,
+                         find_channel, load_config, make_client)
 
 STATE_PATH = BASE_DIR / "widget_state.json"
 
@@ -116,10 +116,10 @@ class App:
             self.client = DemoClient()
         else:
             self.cfg = load_config()
-            self.client = EWeLinkClient.from_config(self.cfg)
+            self.client = make_client(self.cfg)
 
         self.root = tk.Tk()
-        self.root.title("eWeLink" + (" (demo)" if demo else ""))
+        self.root.title("Nhà thông minh" + (" (demo)" if demo else ""))
         self.root.configure(bg=BG)
         self.root.minsize(320, 120)
         self.root.resizable(False, False)
@@ -173,6 +173,12 @@ class App:
             w.destroy()
         box = tk.Frame(self.body, bg=CARD, padx=16, pady=16)
         box.pack(fill="x", pady=(0, 6))
+        if not hasattr(self.client, "oauth_url"):
+            tk.Label(box, text="Không kết nối được Home Assistant", bg=CARD, fg=FG,
+                     font=FONT_B).pack()
+            tk.Label(box, text="Kiểm tra ha_url / ha_token trong config.json\nrồi mở lại widget.",
+                     bg=CARD, fg=MUTED, font=FONT_S, justify="center").pack(pady=6)
+            return
         tk.Label(box, text="Chưa đăng nhập eWeLink", bg=CARD, fg=FG, font=FONT_B).pack()
         tk.Label(box, text="Bấm nút dưới để mở trình duyệt\nvà đăng nhập tài khoản eWeLink.",
                  bg=CARD, fg=MUTED, font=FONT_S, justify="center").pack(pady=6)
@@ -390,7 +396,7 @@ def main():
     except EWeLinkError as e:
         r = tk.Tk()
         r.withdraw()
-        messagebox.showerror("eWeLink", str(e))
+        messagebox.showerror("Nhà thông minh", str(e))
 
 
 if __name__ == "__main__":

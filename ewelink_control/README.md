@@ -1,4 +1,9 @@
-# Điều khiển đèn & công tắc eWeLink trên máy tính
+# Điều khiển đèn & công tắc nhà thông minh trên máy tính
+
+> **Cách khuyên dùng: qua Home Assistant** (gom cả eWeLink lẫn Tuya, chạy trong mạng nhà, không cần tài khoản nhà phát triển).
+> 👉 Làm theo **[HUONG_DAN_HOME_ASSISTANT.md](HUONG_DAN_HOME_ASSISTANT.md)** từ đầu đến cuối.
+>
+> Phần bên dưới mô tả cách dùng widget/phím tắt và **cách cũ** kết nối thẳng eWeLink Cloud (cần tài khoản nhà phát triển, chỉ dùng khi không có Home Assistant).
 
 Công cụ có 3 cách điều khiển:
 
@@ -10,12 +15,16 @@ Công cụ có 3 cách điều khiển:
 
 ---
 
-## Bước 1 – Cài Python (làm 1 lần)
+## (Cách cũ) Kết nối thẳng eWeLink Cloud
+
+Trong `config.json` bỏ `ha_url`/`ha_token` và thêm `app_id`, `app_secret`, `region`, `redirect_url`.
+
+### Bước 1 – Cài Python (làm 1 lần)
 
 - **Windows:** tải ở https://www.python.org/downloads/ → khi cài **nhớ tick "Add python.exe to PATH"**.
 - **Mac:** tải ở cùng địa chỉ trên và cài bình thường.
 
-## Bước 2 – Lấy mã App ID / App Secret (làm 1 lần, miễn phí)
+### Bước 2 – Lấy mã App ID / App Secret (làm 1 lần, miễn phí)
 
 eWeLink yêu cầu ứng dụng bên ngoài phải có mã nhà phát triển:
 
@@ -27,13 +36,13 @@ eWeLink yêu cầu ứng dụng bên ngoài phải có mã nhà phát triển:
    ```
 4. Tạo xong, anh sẽ thấy **APPID** và **APP SECRET**.
 
-## Bước 3 – Điền cấu hình
+### Bước 3 – Điền cấu hình
 
 1. Trong thư mục `ewelink_control`, copy file `config.example.json` và đổi tên bản copy thành `config.json`.
 2. Mở `config.json` bằng Notepad, điền `app_id` và `app_secret`.
 3. `region`: tài khoản ở Việt Nam thường là `"as"` (châu Á). Các giá trị khác: `"eu"`, `"us"`, `"cn"`.
 
-## Bước 4 – Chạy
+### Bước 4 – Chạy
 
 - **Windows:** nháy đúp `Chay_tren_Windows.bat`
 - **Mac:** nháy đúp `Chay_tren_Mac.command` (lần đầu: chuột phải → Open)
